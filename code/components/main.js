@@ -49,7 +49,7 @@ export default function main({navigation}) {
     				onPress={()=>navigation.push('Tài liệu đã đọc')}
     			>
     				<Ionicons name={'hourglass'} size={40} color={'#178e2f'} />
-    				<Text style={styles.text}>Tài liệu Đã đọc</Text>
+    				<Text style={styles.text}>Tài liệu đã đọc</Text>
     	</TouchableOpacity>
 
     	<TouchableOpacity

@@ -23,10 +23,12 @@ export default function Navigator() {
     <NavigationContainer>
 
       <Stack.Navigator>
+      <Stack.Screen name="DangNhap" component={DangNhap}  options={{headerShown:false  }}       />
         <Stack.Screen name="Drawer" component={Drawer} options={{headerShown:false  }}   />
-        <Stack.Screen name="DangNhap" component={DangNhap}  options={{headerShown:false  }}       />
         <Stack.Screen name="Tất cả tài liệu" component={AllDocuments}    />
          <Stack.Screen name="Tài liệu mới" component={AllDocuments}    />
+                 <Stack.Screen name="Tài liệu đã đọc" component={AllDocuments}    />
+
           <Stack.Screen name="Lịch sử" component={AllDocuments}    />
            <Stack.Screen name="Yêu thích" component={AllDocuments}    />
 

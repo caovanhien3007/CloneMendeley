@@ -9,6 +9,12 @@ const {height,width} =Dimensions.get('window');
 function Item(props) {
   return (
       <TouchableOpacity style={styles.item}
+       onPress={()=>{props.navigation.navigate('Document',
+            {
+             name:props.id
+            }
+          )
+      }}
        >
         <Icon name='folder' size={30} color='#178e2f'/>     
           <Text style={styles.title}>{props.id}</Text>
@@ -18,7 +24,7 @@ function Item(props) {
 
 
 
-export default function main({navigation}) {
+export default function main({navigation,route}) {
 
 const [data,setData] =React.useState([]) 
 
@@ -51,7 +57,7 @@ React.useLayoutEffect(() => {
     	<Text style={styles.text0}>Tài liệu</Text>
      <FlatList
         data={data}
-        renderItem={({ item }) => <Item id={item.id} />}
+        renderItem={({ item }) => <Item id={item.id} navigation={navigation} />}
        
       />
 

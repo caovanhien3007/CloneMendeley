@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, PermissionsAndroid, Button ,Image,Dimensions} from "react-native";
+import { StyleSheet, Text, View, PermissionsAndroid, Button ,Image,Dimensions,Alert} from "react-native";
 import DocumentPicker from 'react-native-document-picker';
 import PDFView from 'react-native-view-pdf';
 import Pdf from 'react-native-pdf';
@@ -41,7 +41,7 @@ export default function App  (){
 const lisst=()=>{
  
   console.log(lisUrl)
-  listRef = Firebase.storage().ref().child('FilePdf');
+  listRef = Firebase.storage().ref().child('allDocuments/file1');
 
 listRef.listAll().then(function(res) {
   res.prefixes.forEach(function(folderRef) {
@@ -59,14 +59,14 @@ listRef.listAll().then(function(res) {
 });
 
 }
-
+ 
   uploadToFirebase = (blob) => {
 
     return new Promise((resolve, reject)=>{
 
       var storageRef = Firebase.storage().ref();
 
-      storageRef.child('a/Fire.pdf').put(blob, {
+      storageRef.child('b').put(blob, {
         contentType: 'application/pdf'
       }).then((snapshot)=>{
 
@@ -107,7 +107,7 @@ const requestCameraPermission = async () => {
               type: [DocumentPicker.types.pdf],
             });
           
-            uriToBlob(res.uri).then((blob)=>{
+            uriToBlob().then((blob)=>{
 
       return uploadToFirebase(blob);
 

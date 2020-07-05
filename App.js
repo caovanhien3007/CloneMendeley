@@ -6,7 +6,7 @@ import Navigator from'./code/navigation/Navigator';
 
 function App() {
  return(
-    <Navigator/>
+    <Test/>
   );
 }
 

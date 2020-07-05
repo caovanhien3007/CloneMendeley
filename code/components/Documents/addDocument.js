@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View,StyleSheet,TouchableOpacity,PermissionsAndroid,Dimensions,FlatList,TextInput ,Alert} from 'react-native';
+import { Text, View,StyleSheet,TouchableOpacity,PermissionsAndroid,Dimensions,FlatList,TextInput } from 'react-native';
 import {Firebase} from './../../Firebase/Config.js';
 import  Ionicons from 'react-native-vector-icons/Ionicons';
 import  Icon from 'react-native-vector-icons/Ionicons';
@@ -8,86 +8,16 @@ import DocumentPicker from 'react-native-document-picker';
 
 
 const {height,width} =Dimensions.get('window');
- 
-function Item(props) {
-
-  const Del = () =>
-    Alert.alert(
-      "Nhắc nhở",
-      "Bạn có chắc muốn xóa tài liệu",
-      [
-        {
-          text: "Thoát",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Đồng ý", onPress: () => {
-                  urldel='allDocuments/'+props.name+'/'+props.id;
-                  Firebase.storage().ref().child(urldel)
-                  .delete().then(function() {
-                    props.reload,
-                     alert('Xóa thành công')
-                  }).catch(function(error) {
-                    // Uh-oh, an error occurred!
-                  });
-        } }
-      ],
-      { cancelable: false }
-    );
-    
-  return (
-    <View style={styles.a}>
-      <TouchableOpacity style={styles.item}
-      onPress={()=>{props.navigation.navigate('ReadPdf',
-            {
-             name:props.id,url:props.name
-            }
-          )
-      }}
-       >
-        <Icon name='book-outline' size={30} color='#178e2f'/>     
-          <Text style={styles.title}>{props.id}</Text>
-        </TouchableOpacity>
-         <TouchableOpacity style={styles.item2}
-            onPress={Del}
-         >
-            <Icon name='trash-outline' size={30} color='#178e2f'/> 
-        </TouchableOpacity>
-        </View>
-  );
-}
-
-
 
 export default function Documents({navigation,route}) {
   const [value, onChangeText] = React.useState();
-const [data,setData] =React.useState([]) ;
 const [dialog,setDialog]=React.useState(false);
-const { name } = route.params;
-const [text,setText]=React.useState();
+const [name,setName]  = React.useState("");
+const [text,setText]=React.useState(" ");
 const [url,setUrl]=React.useState();
-const link='allDocuments/'+name;
+
 const [r,setR]=React.useState(1);
-React.useEffect(() => {
-               var  list=[];
-               var sln = name.length+1+13;
-                Firebase.storage().ref().child(link).listAll()
-                .then(function(res) {
-                          res.items.forEach(function(itemRef) {
-                             
-                              a=itemRef.location.path_.substring(sln),
 
-                              list.push({id:a}),setData(list)
-                          });
-
-                        }).catch(function(error) {
-
-                        }); 
-
-       Firebase.database().ref().child(link+'/note').on('value',function(snapshot){
-        setText(snapshot.val())
-       })         
-}, [r]);
 
 React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -149,14 +79,18 @@ uriToBlob = (uri) => {
 // thêm file vào fire base
 function addFile(){
 
-        var u =link+'/'+value+'.pdf';
+        var u ='allDocuments/'+name+'/'+value+'.pdf';
       uriToBlob(url).then((blob)=>{
 
       return uploadToFirebase(blob,u);
 
     }).then((snapshot)=>{
-        setUrl(''),setDialog(false),setR(r+1),onChangeText('')
-      console.log("File uploaded");
+        setUrl(''),setDialog(false),setR(r+1),onChangeText(''),
+        Firebase.database().ref().child('allDocuments/'+name).set({
+  note:text
+ })
+        navigation.push('Drawer')
+      alert('Đã thêm vào tài liệu')
    
     }).catch((error)=>{
 
@@ -168,6 +102,10 @@ function addFile(){
 
 //tạo quyền và lấy url file
   const getUrl = async () => {
+    console.log(name)
+    if(name==""){
+       alert('vui lòng nhập tên tài liệu')
+    }else{
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
@@ -200,20 +138,17 @@ function addFile(){
   } catch (err) {
     console.warn(err);
   }
-};
+}};
 
-function setGhiNho(tex){
- Firebase.database().ref().child(link).set({
-  note:tex
- })
-       
-}
 
   return (
    
     	<View style={styles.container}>
-    	<Text style={styles.text0}>Thông tin chi tiết</Text>
-      <Text style={styles.name}>{name}</Text>
+    	<Text style={styles.text0}>Tên tài liệu</Text>
+      <TextInput style={styles.name}
+                onChangeText={text => setName(text)}
+              value={name}
+      />
       <Text>Ghi nhớ</Text>
       <TextInput
           multiline={true}
@@ -221,21 +156,17 @@ function setGhiNho(tex){
           placeholder="Thêm ghi nhớ..."
           style={styles.textinput}
           defaultValue={text}
-          onChangeText={(tex)=>{setText(tex),setGhiNho(tex)}}
+          onChangeText={(tex)=>setText(tex)}
     />
     <Text>file</Text>
-    <TouchableOpacity style={styles.a}
+    <TouchableOpacity style={styles.item}
       onPress={getUrl}
        >
         <Icon name='add-circle-outline' size={30} color='#178e2f'/>     
           <Text style={styles.title}>Thêm file...</Text>
         </TouchableOpacity>
       
-     <FlatList
-        data={data}
-        renderItem={({ item }) => <Item id={item.id} navigation={navigation} name={name} reload={()=>setR(r+1)} />}
-       
-      />
+    
         <Dialog.Container visible={dialog}>
           <Dialog.Title>Tên file</Dialog.Title>
           <Dialog.Description>
@@ -244,7 +175,7 @@ function setGhiNho(tex){
           <Dialog.Input
               autoFocus={true}
               style={{ height: 40, borderColor: 'gray', borderWidth: 1 }} 
-              onChangeText={text => {onChangeText(text)}}
+              onChangeText={text => onChangeText(text)}
               value={value}
            />
           <Dialog.Button label="Thoát" onPress={()=>{setUrl(''),setDialog(false),setR(r+1),onChangeText('')}} />
@@ -274,30 +205,13 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     flexDirection:'row' ,
     height:50,
-    width:width-70,
+   
     borderWidth:0.5,
     borderColor:'white',
     borderBottomColor:'#178e2f',
     paddingLeft:10,
     paddingTop:15,
    
-  },
-  item2: {
-    backgroundColor:'white',
-    flexDirection:'row' ,
-    height:50,
-    width:70,
-    borderWidth:0.5,
-    borderColor:'white',
-    borderBottomColor:'#178e2f',
-    paddingLeft:10,
-    paddingTop:18,
-   
-  },
-  a:{
-    backgroundColor:'white',
-    flexDirection:'row' ,
-    height:50,width:width,
   },
   title: {
     marginTop:0,

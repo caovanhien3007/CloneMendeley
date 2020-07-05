@@ -7,44 +7,57 @@ export default function Dangnhap({navigation}) {
  const [email,setEmail] = React.useState('');
  const [password,setPass] = React.useState('');
  
- function DangKy({navigation}) {
+ function Dangnhap({navigation}) {
 
  	Firebase.auth().signInWithEmailAndPassword(email, password)
- 	.then(
- 		navigation.push('main')
-    )
+ 	.then(function(result) {
+     console.log(result),
+    navigation.push('Drawer')
+    
+  }
+   )
 
  		
  	.catch(function(error) {
   var errorCode = error.code;
   var errorMessage = error.message;
-  console.log(errorMessage);
+  console.log(error)
+   alert('Tên tài khoản mật khẩu không chính xác')
+
 });
 	
  }
 return(
-  <View>
+  <View style={{flex:1,justifyContent: 'center',}} >
   	<Text
   		style={{fontSize:20,paddingBottom:20,textAlign:'center'}} 
-  	>Dang ky</Text>
+  	>Đăng nhập</Text>
+
     <TextInput
     	autoCorrect={true}
-   
+      placeholder="Email"
       style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
       onChangeText={text => setEmail(text)}
       value={email}
     />
 
     <TextInput
+      placeholder="Password"
+      secureTextEntry={true}
       style={{ height: 40, borderColor: 'gray', borderWidth: 1,}}
       onChangeText={text => setPass(text)}
       value={password}
     />
 
     <TouchableOpacity
-    	onPress={()=>{DangKy({navigation})}}
+    	onPress={()=>{Dangnhap({navigation})}}
     	>
-    	<Text>dangky</Text>
+    	<Text>Đăng nhập</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      onPress={()=>navigation.push('DangKy')}
+      >
+      <Text>Đăng ký</Text>
     </TouchableOpacity>
   </View>
   )

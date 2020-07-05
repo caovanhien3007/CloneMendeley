@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Text, View,StyleSheet,TouchableOpacity,Dimensions } from 'react-native';
+import { Text, View,StyleSheet,TouchableOpacity,Dimensions,Image } from 'react-native';
 
 import  Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const {height,width} =Dimensions.get('window');
 
@@ -18,8 +19,10 @@ export default function main({navigation}) {
     				<Ionicons name={'menu'} size={46} color={'white'} />
     			</TouchableOpacity>
     			<Text style={styles.textHeader} >Mendeley</Text>
-    			<TouchableOpacity>
-    				<Ionicons name={'ellipsis-vertical'} size={46} color={'white'} />
+    			<TouchableOpacity
+    				onPress={()=>navigation.push('Thêm tài liệu')}
+    			>
+    				<Ionicons name={'add-circle-outline'} size={46} color={'white'} />
     			</TouchableOpacity>
     	</View>
     	<View style={styles.container}>
@@ -29,40 +32,40 @@ export default function main({navigation}) {
     				style={styles.lable}
     				onPress={()=>navigation.push('Tất cả tài liệu')}
     			>
-    				<Ionicons name={'menu'} size={46} color={'white'} />
-    				<Text >test</Text>
+    				<Ionicons name={'library'} size={40} color={'#178e2f'} />
+    				<Text style={styles.text}>Tất cả tài liệu</Text>
+    	</TouchableOpacity>
+
+    	<TouchableOpacity
+    				style={styles.lable}
+    				onPress={()=>navigation.push('Tài liệu mới')}
+    			>
+    				<Ionicons name={'file-tray-full-sharp'} size={40} color={'#178e2f'} />
+    				<Text style={styles.text}>Tài liệu mới</Text>
+    	</TouchableOpacity>
+
+    	<TouchableOpacity
+    				style={styles.lable}
+    				onPress={()=>navigation.push('Tài liệu đã đọc')}
+    			>
+    				<Ionicons name={'hourglass'} size={40} color={'#178e2f'} />
+    				<Text style={styles.text}>Tài liệu Đã đọc</Text>
+    	</TouchableOpacity>
+
+    	<TouchableOpacity
+    				style={styles.lable}
+    				onPress={()=>navigation.push('Yêu thích')}
+    			>
+    				<Ionicons name={'star-half-outline'} size={40} color={'#178e2f'} />
+    				<Text style={styles.text}>Yêu thích</Text>
     	</TouchableOpacity>
 
     	<TouchableOpacity
     				style={styles.lable}
     				onPress={()=>navigation.openDrawer()}
     			>
-    				<Ionicons name={'menu'} size={46} color={'white'} />
-    				<Text>test</Text>
-    	</TouchableOpacity>
-
-    	<TouchableOpacity
-    				style={styles.lable}
-    				onPress={()=>navigation.openDrawer()}
-    			>
-    				<Ionicons name={'menu'} size={46} color={'white'} />
-    				<Text>test</Text>
-    	</TouchableOpacity>
-
-    	<TouchableOpacity
-    				style={styles.lable}
-    				onPress={()=>navigation.openDrawer()}
-    			>
-    				<Ionicons name={'menu'} size={46} color={'white'} />
-    				<Text>test</Text>
-    	</TouchableOpacity>
-
-    	<TouchableOpacity
-    				style={styles.lable}
-    				onPress={()=>navigation.openDrawer()}
-    			>
-    				<Ionicons name={'menu'} size={46} color={'white'} />
-    				<Text>test</Text>
+    				<Ionicons name={'trash-sharp'} size={40} color={'#178e2f'} />
+			        <Text style={styles.text}>Thùng giác</Text>
     	</TouchableOpacity>
 
     	
@@ -102,5 +105,7 @@ const styles = StyleSheet.create({
   	borderWidth:0.3,
   	borderBottomColor:'#178e2f',
   	borderTopColor:'white',
-  }
+  	paddingTop:10,paddingLeft:10
+  }, Logo:{height:50,width:50,marginTop:3},
+   text:{fontSize:14,marginLeft:15,textAlign:'center',marginTop:17},
 });

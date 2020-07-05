@@ -28,7 +28,7 @@ export default function TabbarBottom() {
             let iconName;
               size=100;
             if (route.name == 'Thư viện') {
-              iconName = 'library';
+              iconName = 'library-outline';
             } else if (route.name == 'Tin tức') {
               iconName = 'ios-newspaper-outline';
             }else if(route.name=='Đề xuất')

@@ -1,23 +1,13 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import * as React from 'react';
+import { Text ,View} from 'react-native';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import Test from './code/test';
+import Navigator from'./code/navigation/Navigator';
 
 function App() {
-  return();
+ return(
+    <Navigator/>
+  );
 }
 
 export default App;

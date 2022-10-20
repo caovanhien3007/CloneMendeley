@@ -30,7 +30,7 @@
     "react-native-modal": "^11.5.6",
     "react-native-pdf": "^6.2.0",
     "react-native-pdf-view": "^0.3.2",
-    "react-native-reanimated": "^1.9.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-safe-area-context": "^3.0.7",
     "react-native-screens": "^2.9.0",
     "react-native-vector-icons": "^7.0.0",
